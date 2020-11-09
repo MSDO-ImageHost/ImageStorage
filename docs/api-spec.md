@@ -47,7 +47,7 @@ Endpoint: `ImageStorage/deleteImage`
 Request
 ```json
 {
-    "image_id": "<imageid>"
+    "image_id": "<imageid>",
     "deletor": "<user id>"
 }
 ```
