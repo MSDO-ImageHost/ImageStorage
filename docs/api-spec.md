@@ -48,7 +48,7 @@ Request
 ```json
 {
     "image_id": "<imageid>"
-    "creator": "<user id>"
+    "deletor": "<user id>"
 }
 ```
 
@@ -61,3 +61,20 @@ Response
 ```
 
 ## Return Encoded Image
+
+Endpoint: `ImageStorage/returnEncodedImage`
+
+Request
+```json
+{
+    "image_id": "<imageid>"
+}
+```
+
+Response
+```json
+{
+    "image_found": "<boolean>",
+    "image_url": "<imagebloburl>"
+}
+```
