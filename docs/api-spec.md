@@ -16,6 +16,7 @@ Response
 {
     "image_created": "<boolean>",
     "created_at": "<ISO8601 timestamp>",
+    "created_by": "<user id>",
     "image_id": "<imageid>",
     "image_url": "<imageurl>"
 }
