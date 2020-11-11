@@ -17,8 +17,7 @@ Response
     "image_created": "<boolean>",
     "created_at": "<ISO8601 timestamp>",
     "created_by": "<user id>",
-    "image_id": "<imageid>",
-    "image_url": "<imageurl>"
+    "image_id": "<imageURI>",
 }
 ```
 
@@ -76,6 +75,6 @@ Response
 ```json
 {
     "image_found": "<boolean>",
-    "image_url": "<imageblob>"
+    "image_data": "<imageblob>"
 }
 ```
