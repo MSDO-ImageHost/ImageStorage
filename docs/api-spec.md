@@ -29,7 +29,7 @@ Endpoint: `ImageStorage/requestImage`
 Request
 ```json
 {
-    "image_id": "<imageid>"
+    "image_id": "<imageURI>"
 }
 ```
 
@@ -37,7 +37,7 @@ Response
 ```json
 {
     "image_found": "<boolean>",
-    "image_url": "<imageurl>"
+    "image_data": "<datablob>"
 }
 ```
 
@@ -48,7 +48,7 @@ Endpoint: `ImageStorage/deleteImage`
 Request
 ```json
 {
-    "image_id": "<imageid>",
+    "image_id": "<imageURI>",
     "deletor": "<user id>"
 }
 ```
@@ -68,7 +68,7 @@ Endpoint: `ImageStorage/returnEncodedImage`
 Request
 ```json
 {
-    "image_id": "<imageid>"
+    "image_id": "<imageURI>"
 }
 ```
 
@@ -76,6 +76,6 @@ Response
 ```json
 {
     "image_found": "<boolean>",
-    "image_url": "<imagebloburl>"
+    "image_url": "<imageblob>"
 }
 ```
