@@ -2,34 +2,34 @@ package dk.sdu.imagehost.imagestorage
 
 import java.io.File
 
-class FileSystemImageStore(folderName: String) {
+class FileSystemImageStore(folderName: String) : ImageStore {
     private val folder = File(".", folderName).also {
         it.mkdirs()
     }
     private val extension = "png"
     private val ending = ".$extension"
 
-    fun listFiles(): List<String> =
+    override fun listFiles(): List<String> =
         folder.listFiles()!!.asSequence().filter {
             it.extension.equals(extension, ignoreCase = true)
         }.map { it.nameWithoutExtension }.toList()
 
-    fun save(data: ByteArray, name: String) {
+    override fun save(data: ByteArray, name: String) {
         val file = File(folder, name + ending)
         file.writeBytes(data)
     }
 
-    fun delete(name: String) {
+    override fun delete(name: String) {
         val file = File(folder, name + ending)
         file.delete()
     }
 
-    fun exists(name: String): Boolean {
+    override fun exists(name: String): Boolean {
         val file = File(folder, name + ending)
         return file.exists()
     }
 
-    fun load(name: String): ByteArray {
+    override fun load(name: String): ByteArray {
         val file = File(folder, name + ending)
         return file.readBytes()
     }
