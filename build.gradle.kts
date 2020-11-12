@@ -5,8 +5,8 @@ plugins {
     kotlin("jvm") version "1.3.72"
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "dk.sdu.imagehost"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
