@@ -23,8 +23,9 @@ configure<JavaPluginConvention> {
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
+    this.setProperty("archiveFileName", "ImageStorage.jar")
     manifest {
-        attributes["Implementation-Title"] = "Gradle Jar File Example"
+        attributes["Implementation-Title"] = "Imagehost Imagestorage"
         attributes["Implementation-Version"] = archiveVersion
         attributes["Main-Class"] = "dk.sdu.imagehost.imagestorage.MainKt"
     }
