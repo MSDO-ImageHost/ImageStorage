@@ -1,5 +1,7 @@
 # ImageStorage
 
+![.github/workflows/build-docker-image.yml](https://github.com/MSDO-ImageHost/ImageStorage/workflows/.github/workflows/build-docker-image.yml/badge.svg)
+
 ### Credits
 
 The images used for the test cases are CC0-Licensed and from Pexels.com
