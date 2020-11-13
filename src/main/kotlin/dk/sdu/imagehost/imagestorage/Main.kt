@@ -1,7 +1,5 @@
 package dk.sdu.imagehost.imagestorage
 
-import com.rabbitmq.client.*
+fun main(args: Array<String>) {
 
-fun main() {
-    println("Hello World!")
 }

@@ -18,10 +18,12 @@ dependencies {
     implementation("com.rabbitmq", "amqp-client", "5.10.0")
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("com.h2database", "h2", "1.4.200")
     implementation("org.jetbrains.exposed", "exposed-core", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-jodatime", "0.25.1")
+    api("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
     api("org.xerial:sqlite-jdbc:3.21.0.1")
     api("mysql:mysql-connector-java:8.0.21")
 }
