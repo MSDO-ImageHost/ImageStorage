@@ -10,6 +10,7 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -17,6 +18,12 @@ dependencies {
     implementation("com.rabbitmq", "amqp-client", "5.10.0")
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.jetbrains.exposed", "exposed-core", "0.25.1")
+    implementation("org.jetbrains.exposed", "exposed-dao", "0.25.1")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.25.1")
+    implementation("org.jetbrains.exposed", "exposed-jodatime", "0.25.1")
+    api("org.xerial:sqlite-jdbc:3.21.0.1")
+    api("mysql:mysql-connector-java:8.0.21")
 }
 
 configure<JavaPluginConvention> {
