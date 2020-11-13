@@ -7,16 +7,16 @@ import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.jodatime.datetime
 import java.util.*
 
-class Image(id: EntityID<UUID>) : UUIDEntity(id) {
+class ImageRecord(id: EntityID<UUID>) : UUIDEntity(id) {
 
-    companion object : UUIDEntityClass<Image>(Images)
+    companion object : UUIDEntityClass<ImageRecord>(ImageRecords)
 
-    var createdAt by Images.createdAt
-    var owner by Images.owner
+    var createdAt by ImageRecords.createdAt
+    var owner by ImageRecords.owner
 
 }
 
-object Images : UUIDTable("image") {
+object ImageRecords : UUIDTable("image_record") {
     val createdAt = datetime("created_at")
     val owner = uuid("owner")
 }

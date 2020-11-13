@@ -1,6 +1,6 @@
 import dk.sdu.imagehost.imagestorage.db.Credentials
-import dk.sdu.imagehost.imagestorage.db.Image
-import dk.sdu.imagehost.imagestorage.db.Images
+import dk.sdu.imagehost.imagestorage.db.ImageRecord
+import dk.sdu.imagehost.imagestorage.db.ImageRecords
 import dk.sdu.imagehost.imagestorage.db.Parameters
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -25,20 +25,20 @@ object ImageStorageDBTest {
         val parameters = Parameters(credentials, "jdbc:sqlite:test.sqlite", "org.sqlite.JDBC")
         db = parameters.connect()
         transaction(db) {
-            SchemaUtils.create(Images)
+            SchemaUtils.create(ImageRecords)
         }
     }
 
     @Test
     fun `the Image table exists`() = transaction(db) {
         assertTrue {
-            Images.exists()
+            ImageRecords.exists()
         }
     }
 
     @Test
     fun `the db is empty at the start`() = transaction {
-        val images = transaction(db) { Image.all().toList() }
+        val images = transaction(db) { ImageRecord.all().toList() }
         assertEquals(0, images.size)
     }
 
@@ -48,7 +48,7 @@ object ImageStorageDBTest {
         val ownerUUID = UUID.randomUUID()
         val now = DateTime.now()
 
-        val savedObject = Image.new(idUUID) {
+        val savedObject = ImageRecord.new(idUUID) {
             createdAt = now
             owner = ownerUUID
         }
@@ -63,14 +63,14 @@ object ImageStorageDBTest {
         val ownerUUID = UUID.randomUUID()
         val now = DateTime.now()
 
-        Image.new(idUUID) {
+        ImageRecord.new(idUUID) {
             createdAt = now
             owner = ownerUUID
         }
 
-        val loadedImage = Image.findById(idUUID)
+        val loadedImage = ImageRecord.findById(idUUID)
         assertNotNull(loadedImage)
-        loadedImage as Image
+        loadedImage as ImageRecord
         assertEquals(idUUID, loadedImage.id.value)
         assertEquals(ownerUUID, loadedImage.owner)
         assertEquals(now, loadedImage.createdAt)
@@ -79,7 +79,7 @@ object ImageStorageDBTest {
     @AfterEach
     fun truncate() {
         transaction(db) {
-            Images.deleteAll()
+            ImageRecords.deleteAll()
         }
     }
 
