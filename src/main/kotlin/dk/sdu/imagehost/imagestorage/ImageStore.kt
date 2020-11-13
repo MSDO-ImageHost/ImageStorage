@@ -1,9 +1,11 @@
 package dk.sdu.imagehost.imagestorage
 
+import java.util.*
+
 interface ImageStore {
-    fun listFiles(): List<String>
-    fun save(data: ByteArray, name: String)
-    fun delete(name: String)
-    fun exists(name: String): Boolean
-    fun load(name: String): ByteArray
+    fun listFiles(): List<UUID>
+    fun save(data: ByteArray, name: UUID)
+    fun delete(name: UUID)
+    fun exists(name: UUID): Boolean
+    fun load(name: UUID): ByteArray
 }

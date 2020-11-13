@@ -1,23 +1,25 @@
 package dk.sdu.imagehost.imagestorage
 
+import java.util.*
+
 class ImageStorageService : ImageStore {
-    override fun listFiles(): List<String> {
+    override fun listFiles(): List<UUID> {
         TODO("Not yet implemented")
     }
 
-    override fun save(data: ByteArray, name: String) {
+    override fun save(data: ByteArray, name: UUID) {
         TODO("Not yet implemented")
     }
 
-    override fun delete(name: String) {
+    override fun delete(name: UUID) {
         TODO("Not yet implemented")
     }
 
-    override fun exists(name: String): Boolean {
+    override fun exists(name: UUID): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun load(name: String): ByteArray {
+    override fun load(name: UUID): ByteArray {
         TODO("Not yet implemented")
     }
 
