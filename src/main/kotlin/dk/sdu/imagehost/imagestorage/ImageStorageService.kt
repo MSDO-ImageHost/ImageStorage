@@ -1,39 +1,74 @@
 package dk.sdu.imagehost.imagestorage
 
+import dk.sdu.imagehost.imagestorage.db.ImageRecord
+import dk.sdu.imagehost.imagestorage.db.ImageRecords
 import dk.sdu.imagehost.imagestorage.db.Parameters
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
+import dk.sdu.imagehost.imagestorage.db.invoke
+import org.jetbrains.exposed.sql.SchemaUtils
 import java.util.*
 
-class ImageStorageService(dbParameters: Parameters) {
+class ImageStorageService(dbParameters: Parameters, folderName: String) {
 
     private val db = dbParameters.connect()
 
-    fun listFiles(): List<Image> {
-        TODO("Not yet implemented")
+    init {
+        db {
+            SchemaUtils.create(ImageRecords)
+        }
+    }
+
+    private val file = FileSystemImageStore(folderName)
+
+    fun allIDs(): List<UUID> = db {
+        ImageRecord.all().map { it.id.value }
+    }
+
+    fun all(): List<Image> = db {
+        ImageRecord.all().toList()
+    }.map {
+        val id = it.id.value
+        val data = file.load(id)
+        val owner = it.owner
+        val createdAt = it.createdAt
+        Image(id, owner, createdAt, data)
     }
 
     fun save(image: Image) {
-        TODO("Not yet implemented")
+        file.save(image.data, image.id)
+        db {
+            val existing = ImageRecord.findById(image.id)
+            if (existing == null) {
+                ImageRecord.new(image.id) {
+                    owner = image.owner
+                    createdAt = image.createdAt
+                }
+            } else {
+                existing.owner = image.owner
+                existing.createdAt = image.createdAt
+            }
+        }
     }
 
     fun delete(id: UUID) {
-        TODO("Not yet implemented")
+        file.delete(id)
+        db {
+            ImageRecord.findById(id)?.delete()
+        }
     }
 
-    fun exists(id: UUID): Boolean {
-        TODO("Not yet implemented")
+    fun exists(id: UUID): Boolean = db {
+        ImageRecord.findById(id) != null
     }
 
-    fun load(id: UUID): ByteArray {
-        TODO("Not yet implemented")
+    fun load(imageId: UUID): Image? {
+        val record = db {
+            ImageRecord.findById(imageId)
+        } ?: return null
+        val id = record.id.value
+        val data = file.load(id)
+        val owner = record.owner
+        val createdAt = record.createdAt
+        return Image(id, owner, createdAt, data)
     }
 
 }
-
-private operator fun <T> Database.invoke(function: () -> T): T {
-    return transaction {
-        function()
-    }
-}
-
