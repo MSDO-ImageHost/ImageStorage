@@ -67,22 +67,3 @@ Response
     "deleted_at": "<ISO8601 timestamp>"
 }
 ```
-
-## Return Encoded Image
-
-Endpoint: `ImageStorage/returnEncodedImage`
-
-Request
-```json
-{
-    "image_id": "<imageURI>"
-}
-```
-
-Response
-```json
-{
-    "image_found": "<boolean>",
-    "image_data": "<imageblob>"
-}
-```
