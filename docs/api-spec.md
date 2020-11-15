@@ -1,5 +1,13 @@
 # API Specification
 
+#### Access control
+Any request must contain a valid session token
+```json
+{
+    "session_token": "<SessionTokenID: valid and active JWT>"
+}
+```
+
 ## Create Image
 
 Endpoint: `ImageStorage/createImage`
@@ -7,7 +15,7 @@ Endpoint: `ImageStorage/createImage`
 Request
 ```json
 {
-    "creator": "<user id>"
+    "creator": "<JWT>"
 }
 ```
 
@@ -48,7 +56,7 @@ Request
 ```json
 {
     "image_id": "<imageURI>",
-    "deletor": "<user id>"
+    "deletor": "<JWT>"
 }
 ```
 
