@@ -4,13 +4,13 @@ import org.joda.time.DateTime
 import java.util.*
 
 sealed class ImageStorageEvent {
-    sealed class ImageStorageRequest : ImageStorageEvent() {
-        data class ImageCreateRequest(val owner: UUID, val data: ByteArray) : ImageStorageRequest() {
+    sealed class Request : ImageStorageEvent() {
+        data class Create(val owner: UUID, val data: ByteArray) : Request() {
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (javaClass != other?.javaClass) return false
 
-                other as ImageCreateRequest
+                other as Create
 
                 if (owner != other.owner) return false
                 if (!data.contentEquals(other.data)) return false
@@ -25,16 +25,16 @@ sealed class ImageStorageEvent {
             }
         }
 
-        data class ImageLoadRequest(val id: UUID) : ImageStorageRequest()
+        data class Load(val id: UUID) : Request()
 
-        data class ImageDeleteRequest(val id: UUID) : ImageStorageRequest()
+        data class Delete(val id: UUID) : Request()
     }
 
-    sealed class ImageStorageResponse : ImageStorageEvent() {
-        data class ImageCreateResponse(val id: UUID) : ImageStorageResponse()
-        data class ImageLoadRequest(val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
-            ImageStorageResponse()
+    sealed class Response : ImageStorageEvent() {
+        data class Create(val id: UUID) : Response()
+        data class Load(val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
+            Response()
 
-        data class ImageDeleteRequest(val id: UUID) : ImageStorageResponse()
+        data class Delete(val id: UUID) : Response()
     }
 }
