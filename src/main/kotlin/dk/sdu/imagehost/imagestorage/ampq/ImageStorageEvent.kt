@@ -49,15 +49,42 @@ sealed class ImageStorageEvent {
                 get() = "ImageCreateResponse"
         }
 
-        data class Load(val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
+        data class Load(val id: UUID, val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
             Response() {
             override val TAG: String
                 get() = "ImageLoadResponse"
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+
+                other as Load
+
+                if (id != other.id) return false
+                if (owner != other.owner) return false
+                if (!data.contentEquals(other.data)) return false
+                if (createdAt != other.createdAt) return false
+
+                return true
+            }
+
+            override fun hashCode(): Int {
+                var result = id.hashCode()
+                result = 31 * result + owner.hashCode()
+                result = 31 * result + data.contentHashCode()
+                result = 31 * result + createdAt.hashCode()
+                return result
+            }
         }
 
         data class Delete(val id: UUID) : Response() {
             override val TAG: String
                 get() = "ImageDeleteResponse"
+        }
+
+        data class LoadError(val id: UUID): Response(){
+            override val TAG: String
+                get() = "ImageLoadError"
         }
     }
 }
