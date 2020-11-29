@@ -33,7 +33,7 @@ class ImageStorageService(dbParameters: Parameters, folderName: String) {
         Image(id, owner, createdAt, data)
     }
 
-    fun save(image: Image) {
+    fun storeImage(image: Image) {
         file.save(image.data, image.id)
         db {
             val existing = ImageRecord.findById(image.id)
@@ -49,7 +49,7 @@ class ImageStorageService(dbParameters: Parameters, folderName: String) {
         }
     }
 
-    fun delete(id: UUID) {
+    fun deleteImage(id: UUID) {
         file.delete(id)
         db {
             ImageRecord.findById(id)?.delete()
@@ -60,7 +60,7 @@ class ImageStorageService(dbParameters: Parameters, folderName: String) {
         ImageRecord.findById(id) != null
     }
 
-    fun load(imageId: UUID): Image? {
+    fun requestImage(imageId: UUID): Image? {
         val record = db {
             ImageRecord.findById(imageId)
         } ?: return null

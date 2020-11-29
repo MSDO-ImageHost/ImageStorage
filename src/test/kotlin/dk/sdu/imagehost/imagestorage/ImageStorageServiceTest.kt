@@ -5,7 +5,6 @@ import dk.sdu.imagehost.imagestorage.db.Parameters
 import org.joda.time.DateTime
 import org.junit.jupiter.api.*
 import java.io.File
-import java.io.FileNotFoundException
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -67,16 +66,16 @@ object ImageStorageServiceTest {
     @Test
     fun `an image is saved`() {
         val lighthouse = Image(lighthouseID, userA, DateTime.now(), lighthouseData)
-        imageStorage.save(lighthouse)
+        imageStorage.storeImage(lighthouse)
         Assertions.assertTrue(imageStorage.exists(lighthouseID))
     }
 
     @Test
     fun `an image is loaded`() {
         val pancakes = Image(pancakesID, userA, DateTime.now(), pancakesData)
-        imageStorage.save(pancakes)
+        imageStorage.storeImage(pancakes)
         Assertions.assertTrue(imageStorage.exists(pancakesID))
-        val pancakesLoaded = imageStorage.load(pancakesID)
+        val pancakesLoaded = imageStorage.requestImage(pancakesID)
         Assertions.assertEquals(pancakes, pancakesLoaded)
     }
 
@@ -84,26 +83,26 @@ object ImageStorageServiceTest {
     fun `an image is overwritten`() {
         val lighthouse = Image(imgID, userA, DateTime.now(), lighthouseData)
         val pancakes = Image(imgID, userA, DateTime.now(), pancakesData)
-        imageStorage.save(pancakes)
+        imageStorage.storeImage(pancakes)
         Assertions.assertTrue(imageStorage.exists(imgID))
-        imageStorage.save(lighthouse)
+        imageStorage.storeImage(lighthouse)
         Assertions.assertTrue(imageStorage.exists(imgID))
-        val img = imageStorage.load(imgID)
+        val img = imageStorage.requestImage(imgID)
         Assertions.assertEquals(lighthouse, img)
     }
 
     @Test
     fun `reading a nonexistent image returns null`() {
         Assertions.assertFalse(imageStorage.exists(rumplestiltkinID))
-        Assertions.assertNull(imageStorage.load(rumplestiltkinID))
+        Assertions.assertNull(imageStorage.requestImage(rumplestiltkinID))
     }
 
     @Test
     fun `an image is deleted`() {
         val lighthouse = Image(lighthouseID, userA, DateTime.now(), lighthouseData)
-        imageStorage.save(lighthouse)
+        imageStorage.storeImage(lighthouse)
         Assertions.assertTrue(imageStorage.exists(lighthouseID))
-        imageStorage.delete(lighthouseID)
+        imageStorage.deleteImage(lighthouseID)
         Assertions.assertFalse(imageStorage.exists(lighthouseID))
     }
 
@@ -112,9 +111,9 @@ object ImageStorageServiceTest {
         val lighthouse = Image(lighthouseID, userA, DateTime.now(), lighthouseData)
         val pancakes = Image(pancakesID, userB, DateTime.now(), pancakesData)
         val rocket = Image(rocketID, userB, DateTime.now(), rocketData)
-        imageStorage.save(lighthouse)
-        imageStorage.save(pancakes)
-        imageStorage.save(rocket)
+        imageStorage.storeImage(lighthouse)
+        imageStorage.storeImage(pancakes)
+        imageStorage.storeImage(rocket)
         val images = imageStorage.all().toSet()
         Assertions.assertEquals(3, images.size)
         Assertions.assertEquals(setOf(pancakes, lighthouse, rocket), images)
