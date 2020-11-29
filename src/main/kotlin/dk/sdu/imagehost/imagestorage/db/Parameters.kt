@@ -11,4 +11,13 @@ data class Parameters(val creds: Credentials, val uri: String, val driver: Strin
             creds.password
         )
     }
+    companion object {
+        fun env(): Parameters{
+            val user = System.getenv("DB_USER")
+            val password = System.getenv("DB_PASSWORD")
+            val uri = System.getenv("DB_URI")
+            val driver = System.getenv("DB_DRIVER")
+            return Parameters(Credentials(user, password), uri, driver)
+        }
+    }
 }
