@@ -4,8 +4,14 @@ import org.joda.time.DateTime
 import java.util.*
 
 sealed class ImageStorageEvent {
+
+    abstract val TAG: String
+
     sealed class Request : ImageStorageEvent() {
         data class Create(val owner: UUID, val data: ByteArray) : Request() {
+            override val TAG: String
+                get() = "ImageCreateRequest"
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (javaClass != other?.javaClass) return false
@@ -23,18 +29,35 @@ sealed class ImageStorageEvent {
                 result = 31 * result + data.contentHashCode()
                 return result
             }
+
         }
 
-        data class Load(val id: UUID) : Request()
+        data class Load(val id: UUID) : Request() {
+            override val TAG: String
+                get() = "ImageLoadRequest"
+        }
 
-        data class Delete(val id: UUID) : Request()
+        data class Delete(val id: UUID) : Request() {
+            override val TAG: String
+                get() = "ImageDeleteRequest"
+        }
     }
 
     sealed class Response : ImageStorageEvent() {
-        data class Create(val id: UUID) : Response()
-        data class Load(val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
-            Response()
+        data class Create(val id: UUID) : Response() {
+            override val TAG: String
+                get() = "ImageCreateResponse"
+        }
 
-        data class Delete(val id: UUID) : Response()
+        data class Load(val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
+            Response() {
+            override val TAG: String
+                get() = "ImageLoadResponse"
+        }
+
+        data class Delete(val id: UUID) : Response() {
+            override val TAG: String
+                get() = "ImageDeleteResponse"
+        }
     }
 }
