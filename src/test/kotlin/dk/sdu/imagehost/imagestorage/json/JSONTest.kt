@@ -1,6 +1,7 @@
 package dk.sdu.imagehost.imagestorage.json
 
 import com.beust.klaxon.Klaxon
+import dk.sdu.imagehost.imagestorage.Image
 import org.junit.jupiter.api.*
 
 import org.junit.jupiter.api.Assertions.*
@@ -99,6 +100,13 @@ object JSONTest {
     fun `JSON Object with an UUID`(){
         val instance = UUIDHolder("random", UUID.randomUUID())
         testJSON(instance)
+    }
+
+    @Test
+    fun `Image Class`() {
+        val id = UUID.randomUUID()
+        val owner = UUID.randomUUID()
+        testJSON(Image(id, owner, NOW, lighthouseData))
     }
 
     inline fun <reified T> testJSON(instance: T){
