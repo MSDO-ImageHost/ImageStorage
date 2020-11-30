@@ -7,14 +7,13 @@ import org.json.JSONObject
 
 class Receive(exchange: String) {
     private val exchangeName = exchange
-    var uri: String = System.getenv("AMQP_URI") ?: "localhost"
+    var uri: String = System.getenv("AMQP_URI") ?: "amqp://guest:guest@localhost:5672"
 
     fun receiver(keywords: MutableList<String>) {
         val factory = ConnectionFactory()
         factory.setUri(uri)
         val connection = factory.newConnection()
         val channel = connection.createChannel()
-
 
         channel.exchangeDeclare(exchangeName, BuiltinExchangeType.DIRECT)
         val queueName = channel.queueDeclare().queue

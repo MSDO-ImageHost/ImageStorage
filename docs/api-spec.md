@@ -58,6 +58,6 @@ Request
 Response
 ```json
 {
-    "status_code": "<Int: HTTP code>",
+    "status_code": "<Int: HTTP code>"
 }
 ```
