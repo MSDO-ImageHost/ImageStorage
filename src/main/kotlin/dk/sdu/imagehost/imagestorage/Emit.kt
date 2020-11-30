@@ -6,16 +6,12 @@ import org.json.JSONObject
 
 
 class Emit(exchange: String) {
-        private val exchangeName = exchange
+    private val exchangeName = exchange
+    var uri: String = System.getenv("AMQP_URI") ?: "localhost"
 
     fun emitter(argv: Pair<String, JSONObject>) {
         val factory = ConnectionFactory()
-        val uri = System.getenv("AMQP_URI")
-        if(uri == null) {
-            factory.host = "localhost"
-        } else {
-            factory.setUri(uri)
-        }
+        factory.setUri(uri)
         val connection = factory.newConnection()
         val channel = connection.createChannel()
 
