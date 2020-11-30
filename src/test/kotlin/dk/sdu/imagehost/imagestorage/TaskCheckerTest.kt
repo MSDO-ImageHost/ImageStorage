@@ -3,6 +3,7 @@ package dk.sdu.imagehost.imagestorage
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.PrintStream
 import java.util.*
 
@@ -25,6 +26,12 @@ internal class TaskCheckerTest {
         rocketData = loadResource("rocket.png")
     }
 
+    @BeforeAll
+    fun clean() {
+        File(".", ImageStorageServiceTest.folderName).deleteRecursively()
+        File("test.sqlite").delete()
+    }
+
     @BeforeEach
     fun setUp() {
         taskChecker = TaskChecker()
@@ -35,6 +42,10 @@ internal class TaskCheckerTest {
     @AfterEach
     fun tearDown() {
         System.setOut(standardOut)
+        File(".", ImageStorageServiceTest.folderName).listFiles()!!.forEach {
+            it.delete()
+        }
+        File("test.sqlite").delete()
     }
 
     @Test

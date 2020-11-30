@@ -7,6 +7,4 @@ fun main(args: Array<String>) {
     val rc = Receive("Gateway")
     rc.receiver(mutableListOf("storeImage", "requestImage", "deleteImage"))
     println("Gateway receiver running")
-
-
 }

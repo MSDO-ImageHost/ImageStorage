@@ -10,7 +10,12 @@ class Emit(exchange: String) {
 
     fun emitter(argv: Pair<String, JSONObject>) {
         val factory = ConnectionFactory()
-        factory.host = "localhost"
+        val uri = System.getenv("AMQP_URI")
+        if(uri == null) {
+            factory.host = "localhost"
+        } else {
+            factory.setUri(uri)
+        }
         val connection = factory.newConnection()
         val channel = connection.createChannel()
 
