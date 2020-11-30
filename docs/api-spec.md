@@ -10,52 +10,47 @@ Any request must contain a valid session token
 
 ## Create Image
 
-Endpoint: `ImageStorage/createImage`
-
 Request
 ```json
 {
-    "creator": "<JWT>"
+    "creator": "<JWT>",
+    "imageData": "<ByteArray>",
+    "imageID": "<String?: Optional ID of image to replace>"
 }
 ```
 
 Response
 ```json
 {
-    "image_created": "<boolean>",
-    "created_at": "<ISO8601 timestamp>",
-    "created_by": "<user id>",
-    "image_id": "<imageURI>",
+    "status_code": "<Int: HTTP code>",
+    "created_by": "<String?: user ID>",
+    "image_id": "<String?: image ID>"
 }
 ```
 
 ## Request Image
 
-Endpoint: `ImageStorage/requestImage`
-
 Request
 ```json
 {
-    "image_id": "<imageURI>"
+    "image_id": "<String: image ID>"
 }
 ```
 
 Response
 ```json
 {
-    "image_found": "<boolean>",
-    "image_data": "<datablob>"
+    "status_code": "<Int: HTTP code>",
+    "image_data": "<Image?: data of image>"
 }
 ```
 
 ## Delete Image
 
-Endpoint: `ImageStorage/deleteImage`
-
 Request
 ```json
 {
-    "image_id": "<imageURI>",
+    "image_id": "<String: image ID>",
     "deletor": "<JWT>"
 }
 ```
@@ -63,7 +58,6 @@ Request
 Response
 ```json
 {
-    "image_deleted": "<boolean>",
-    "deleted_at": "<ISO8601 timestamp>"
+    "status_code": "<Int: HTTP code>",
 }
 ```
