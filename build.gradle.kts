@@ -22,7 +22,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-core", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.25.1")
-    implementation("org.jetbrains.exposed", "exposed-jodatime", "0.25.1")
+    implementation("org.jetbrains.exposed", "exposed-java-time", "0.25.1")
     implementation("com.beust:klaxon:5.4")
     api("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
     api("org.xerial:sqlite-jdbc:3.21.0.1")

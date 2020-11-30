@@ -1,6 +1,6 @@
 package dk.sdu.imagehost.imagestorage.ampq
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
 import java.util.*
 
 sealed class ImageStorageEvent {
@@ -49,7 +49,7 @@ sealed class ImageStorageEvent {
                 get() = "ImageCreateResponse"
         }
 
-        data class Load(val id: UUID, val owner: UUID, val data: ByteArray, val createdAt: DateTime) :
+        data class Load(val id: UUID, val owner: UUID, val data: ByteArray, val createdAt: LocalDateTime) :
             Response() {
             override val TAG: String
                 get() = "ImageLoadResponse"

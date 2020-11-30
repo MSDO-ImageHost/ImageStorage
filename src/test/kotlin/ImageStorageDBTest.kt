@@ -7,10 +7,10 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.exists
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import java.io.File
+import java.time.LocalDateTime
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -46,7 +46,7 @@ object ImageStorageDBTest {
     fun `an image is saved with a set UUID`() = transaction {
         val idUUID = UUID.randomUUID()
         val ownerUUID = UUID.randomUUID()
-        val now = DateTime.now()
+        val now = LocalDateTime.now()
 
         val savedObject = ImageRecord.new(idUUID) {
             createdAt = now
@@ -61,7 +61,7 @@ object ImageStorageDBTest {
     fun `the correct image is loaded`() = transaction {
         val idUUID = UUID.randomUUID()
         val ownerUUID = UUID.randomUUID()
-        val now = DateTime.now()
+        val now = LocalDateTime.now()
 
         ImageRecord.new(idUUID) {
             createdAt = now

@@ -4,8 +4,8 @@ import dk.sdu.imagehost.imagestorage.ampq.AMPQ
 import dk.sdu.imagehost.imagestorage.ampq.EventCallback
 import dk.sdu.imagehost.imagestorage.ampq.ImageStorageEvent
 import dk.sdu.imagehost.imagestorage.db.Parameters
-import org.joda.time.DateTime
 import java.net.URI
+import java.time.LocalDateTime
 import java.util.*
 
 fun main() {
@@ -16,7 +16,7 @@ fun main() {
             when (req) {
                 is ImageStorageEvent.Request.Create -> {
                     val id = UUID.randomUUID()
-                    val image = Image(id, req.owner, DateTime.now(), req.data)
+                    val image = Image(id, req.owner, LocalDateTime.now(), req.data)
                     service.save(image)
                     res(ImageStorageEvent.Response.Create(id))
                 }

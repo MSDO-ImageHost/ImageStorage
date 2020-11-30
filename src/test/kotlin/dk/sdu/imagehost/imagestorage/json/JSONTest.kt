@@ -1,10 +1,11 @@
 package dk.sdu.imagehost.imagestorage.json
 
 import com.beust.klaxon.Klaxon
-import org.joda.time.DateTime
 import org.junit.jupiter.api.*
 
 import org.junit.jupiter.api.Assertions.*
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -13,6 +14,8 @@ object JSONTest {
     private lateinit var klaxon: Klaxon
     private lateinit var lighthouseData: ByteArray
 
+    val NOW = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)
+    
     @BeforeAll
     fun setUp() {
         val classloader = JSONTest::class.java.classLoader
@@ -45,7 +48,7 @@ object JSONTest {
 
     }
 
-    data class DateTimeHolder(val tag: String, val datetime: DateTime){
+    data class DateTimeHolder(val tag: String, val datetime: LocalDateTime){
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -97,7 +100,7 @@ object JSONTest {
 
     @Test
     fun `Serialize and deserialize a JSON Object with a DateTime`(){
-        val instance = DateTimeHolder("now", DateTime.now())
+        val instance = DateTimeHolder("now", NOW)
         val encoded = klaxon.toJsonString(instance)
         val parsedInstance = klaxon.parse<DateTimeHolder>(encoded)
         assertNotNull(parsedInstance)
