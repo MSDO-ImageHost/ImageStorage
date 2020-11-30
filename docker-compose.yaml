@@ -1,0 +1,33 @@
+version: '3'
+
+
+volumes:
+  rabbitmq_data:
+    driver: local
+
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq_data:/bitnami
+    ports:
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: unless-stopped
+
+
+  imagestorage:
+    build: .
+    container_name: imagestorage
+    depends_on:
+      - rabbitmq
+    ports:
+      - 8080:80
+      - 3000:3000
+    environment:
+      - AMQP_URI=amqp://guest:guest@rabbit:5672
+    restart: unless-stopped

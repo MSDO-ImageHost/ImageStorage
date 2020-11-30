@@ -8,9 +8,9 @@ import java.util.*
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 object FileSystemImageStoreTest {
 
-    val folderName = "testStore"
-    val folder = File(".", folderName)
-    val fileEnding = ".png"
+    private const val folderName = "testStore"
+    private val folder = File(".", folderName)
+    private const val fileEnding = ".png"
     lateinit var imageStore: FileSystemImageStore
     lateinit var lighthouse: ByteArray
     lateinit var pancakes: ByteArray

@@ -24,6 +24,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-java-time", "0.25.1")
     implementation("com.beust:klaxon:5.4")
+    implementation("org.json:json:20201115")
     implementation("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
     implementation("org.xerial:sqlite-jdbc:3.21.0.1")
     implementation("mysql:mysql-connector-java:8.0.21")
