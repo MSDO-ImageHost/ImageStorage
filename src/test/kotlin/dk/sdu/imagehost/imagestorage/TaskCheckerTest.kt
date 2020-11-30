@@ -110,11 +110,10 @@ internal class TaskCheckerTest {
         val message2 = Events().requestDeleteImage(imageID.toString(), userID.toString())
         taskChecker.taskChecker(message2)
 
-        val answer = "storing image\r\n" +
-                " [x] Sent 'storeImage':'{\"status_code\":200,\"imageID\":\"cabfeb97-c35d-447c-b55c-a7e423d6e2e1\",\"created_by\":\"42b7fa9a-5746-4bc1-97cd-1fbee6a2fe8a\"}'\r\n" +
-                "deleting image\r\n" +
-                " [x] Sent 'deleteImage':'{\"status_code\":200}'"
-        val actual = outputStreamCaptor.toString().trim()
+        val lines = outputStreamCaptor.toString().trim().lines()
+
+        val answer = "deleting image" + " [x] Sent 'deleteImage':'{\"status_code\":200}'"
+        val actual = lines[2] + lines[3]
         assertEquals(answer, actual)
     }
 
@@ -155,14 +154,10 @@ internal class TaskCheckerTest {
         val message3 = Events().requestDeleteImage(imageID.toString(), userID.toString())
         taskChecker.taskChecker(message3)
 
-        val answer = "storing image\r\n" +
-                " [x] Sent 'storeImage':'{\"status_code\":200,\"imageID\":\"c0d8d1e2-676c-41c0-8093-8b5b6cae607c\",\"created_by\":\"42b7fa9a-5746-4bc1-97cd-1fbee6a2fe8a\"}'\r\n" +
-                "requesting image\r\n" +
-                " [x] Sent 'requestImage':'{\"status_code\":200,\"Image\":\"Image(id=c0d8d1e2-676c-41c0-8093-8b5b6cae607c, owner=42b7fa9a-5746-4bc1-97cd-1fbee6a2fe8a,\r\n" +
-                "deleting image\r\n" +
-                " [x] Sent 'deleteImage':'{\"status_code\":200}'"
+        val lines = outputStreamCaptor.toString().trim().lines()
 
-        val actual = outputStreamCaptor.toString().trim().substring(0, 324) + outputStreamCaptor.toString().trim().substring(419)
+        val answer = "deleting image" + " [x] Sent 'deleteImage':'{\"status_code\":200}'"
+        val actual = lines[4] + lines[5]
         assertEquals(answer, actual)
     }
 }
