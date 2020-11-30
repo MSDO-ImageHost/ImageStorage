@@ -24,9 +24,9 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.25.1")
     implementation("org.jetbrains.exposed", "exposed-java-time", "0.25.1")
     implementation("com.beust:klaxon:5.4")
-    api("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
-    api("org.xerial:sqlite-jdbc:3.21.0.1")
-    api("mysql:mysql-connector-java:8.0.21")
+    implementation("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
+    implementation("org.xerial:sqlite-jdbc:3.21.0.1")
+    implementation("mysql:mysql-connector-java:8.0.21")
 }
 
 configure<JavaPluginConvention> {
@@ -35,6 +35,7 @@ configure<JavaPluginConvention> {
 
 tasks.test {
     useJUnitPlatform()
+    setEnvironment("DB_USER" to "guest", "DB_PASSWORD" to "pass", "DB_URI" to "jdbc:sqlite:test.sqlite", "DB_DRIVER" to "org.sqlite.JDBC")
     testLogging {
         events("passed", "skipped", "failed")
     }
