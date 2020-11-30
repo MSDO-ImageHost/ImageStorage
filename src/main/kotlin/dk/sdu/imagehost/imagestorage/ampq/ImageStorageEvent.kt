@@ -1,5 +1,6 @@
 package dk.sdu.imagehost.imagestorage.ampq
 
+import com.beust.klaxon.Json
 import java.time.LocalDateTime
 import java.util.*
 
@@ -9,6 +10,7 @@ sealed class ImageStorageEvent {
 
     sealed class Request : ImageStorageEvent() {
         data class Create(val owner: UUID, val data: ByteArray) : Request() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateRequest"
 
@@ -33,11 +35,13 @@ sealed class ImageStorageEvent {
         }
 
         data class Load(val id: UUID) : Request() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadRequest"
         }
 
         data class Delete(val id: UUID) : Request() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteRequest"
         }
@@ -45,12 +49,14 @@ sealed class ImageStorageEvent {
 
     sealed class Response : ImageStorageEvent() {
         data class Create(val id: UUID) : Response() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateResponse"
         }
 
         data class Load(val id: UUID, val owner: UUID, val data: ByteArray, val createdAt: LocalDateTime) :
             Response() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadResponse"
 
@@ -78,11 +84,13 @@ sealed class ImageStorageEvent {
         }
 
         data class Delete(val id: UUID) : Response() {
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteResponse"
         }
 
         data class LoadError(val id: UUID): Response(){
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadError"
         }
