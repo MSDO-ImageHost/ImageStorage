@@ -10,6 +10,6 @@ object Base64Converter : Converter {
 
     override fun fromJson(jv: JsonValue): ByteArray = Base64.getDecoder().decode(jv.string!!)
 
-    override fun toJson(value: Any): String = "\"${Base64.getEncoder().encodeToString(value as ByteArray)}\""
+    override fun toJson(value: Any): String = Base64.getEncoder().encodeToString(value as ByteArray).enquote()
 
 }

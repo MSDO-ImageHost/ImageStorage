@@ -9,5 +9,5 @@ object DateTimeConverter : Converter {
 
     override fun fromJson(jv: JsonValue): Any = DateTime.parse(jv.string!!)
 
-    override fun toJson(value: Any): String = (value as DateTime).toString()
+    override fun toJson(value: Any): String = (value as DateTime).toString().enquote()
 }

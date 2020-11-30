@@ -9,5 +9,5 @@ object UUIDConverter : Converter {
 
     override fun fromJson(jv: JsonValue): UUID = UUID.fromString(jv.string!!)
 
-    override fun toJson(value: Any): String = (value as UUID).toString()
+    override fun toJson(value: Any): String = (value as UUID).toString().enquote()
 }
