@@ -14,8 +14,8 @@ Request
 ```json
 {
     "creator": "<JWT>",
-    "imageData": "<ByteArray>",
-    "imageID": "<String?: Optional ID of image to replace>"
+    "image_data": "<ByteArray>",
+    "image_id": "<String?: Optional ID of image to replace>"
 }
 ```
 
