@@ -11,7 +11,7 @@ import java.util.*
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 object JSONTest {
 
-    private lateinit var klaxon: Klaxon
+    lateinit var klaxon: Klaxon
     private lateinit var lighthouseData: ByteArray
 
     val NOW = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)
@@ -71,49 +71,40 @@ object JSONTest {
     data class UUIDHolder(val tag: String, val uuid: UUID)
 
     @Test
-    fun `Serialize and deserialize a simple JSON Object`(){
+    fun `Simple JSON Object`(){
         val instance = StringHolder("lighthouse")
-        val encoded = klaxon.toJsonString(instance)
-        val parsedInstance = klaxon.parse<StringHolder>(encoded)
-        assertNotNull(parsedInstance)
-        assertEquals(instance, parsedInstance)
+        testJSON(instance)
     }
 
     @Test
-    fun `Serialize and deserialize a JSON Object with a ByteArray`() {
+    fun `JSON Object with a ByteArray`() {
         val data = ByteArray(255){it.toByte()}
         val instance = ByteArrayHolder("data", data)
-        val encoded = klaxon.toJsonString(instance)
-        val parsedInstance = klaxon.parse<ByteArrayHolder>(encoded)
-        assertNotNull(parsedInstance)
-        assertEquals(instance, parsedInstance)
+        testJSON(instance)
     }
 
     @Test
-    fun `Serialize and deserialize a JSON Object with a large ByteArray`() {
+    fun `JSON Object with a large ByteArray`() {
         val instance = ByteArrayHolder("lighthouse", lighthouseData)
-        val encoded = klaxon.toJsonString(instance)
-        val parsedInstance = klaxon.parse<ByteArrayHolder>(encoded)
-        assertNotNull(parsedInstance)
-        assertEquals(instance, parsedInstance)
+        testJSON(instance)
     }
 
     @Test
-    fun `Serialize and deserialize a JSON Object with a DateTime`(){
+    fun `JSON Object with a DateTime`(){
         val instance = DateTimeHolder("now", NOW)
-        val encoded = klaxon.toJsonString(instance)
-        val parsedInstance = klaxon.parse<DateTimeHolder>(encoded)
-        assertNotNull(parsedInstance)
-        assertEquals(instance.toString(), parsedInstance.toString())
+        testJSON(instance)
     }
 
     @Test
-    fun `Serialize and deserialize a JSON Object with an UUID`(){
+    fun `JSON Object with an UUID`(){
         val instance = UUIDHolder("random", UUID.randomUUID())
+        testJSON(instance)
+    }
+
+    inline fun <reified T> testJSON(instance: T){
         val encoded = klaxon.toJsonString(instance)
-        val parsedInstance = klaxon.parse<UUIDHolder>(encoded)
+        val parsedInstance = klaxon.parse<T>(encoded)
         assertNotNull(parsedInstance)
         assertEquals(instance, parsedInstance)
     }
-
 }
