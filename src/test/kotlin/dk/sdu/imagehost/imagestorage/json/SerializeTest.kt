@@ -15,17 +15,16 @@ object SerializeTest {
 
     lateinit var klaxon: Klaxon
 
-    val NOW = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)
-    val DATA = ByteArray(64).also { Random().nextBytes(it) }
+    private val NOW: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)
+    private val DATA = ByteArray(64).also { Random().nextBytes(it) }
 
     @BeforeAll
     fun setUp() {
-        val classloader = SerializeTest::class.java.classLoader
         klaxon = Klaxon().converter(Base64Converter).converter(DateTimeConverter).converter(UUIDConverter)
     }
 
-    val id = UUID.randomUUID()
-    val owner = UUID.randomUUID()
+    private val id: UUID = UUID.randomUUID()
+    private val owner: UUID = UUID.randomUUID()
 
     @Test
     fun `Serialize Image`() {
@@ -33,50 +32,51 @@ object SerializeTest {
     }
 
     @Test
-    fun `Serialize ImageCreateRequest`(){
+    fun `Serialize ImageCreateRequest`() {
         val event = ImageStorageEvent.Request.Create(owner, DATA)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageLoadRequest`(){
+    fun `Serialize ImageLoadRequest`() {
         val event = ImageStorageEvent.Request.Load(id)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageDeleteRequest`(){
+    fun `Serialize ImageDeleteRequest`() {
         val event = ImageStorageEvent.Request.Delete(id)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageCreateResponse`(){
+    fun `Serialize ImageCreateResponse`() {
         val event = ImageStorageEvent.Response.Create(id)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageLoadResponse`(){
+    fun `Serialize ImageLoadResponse`() {
         val event = ImageStorageEvent.Response.Load(id, owner, DATA, NOW)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageDeleteResponse`(){
+    fun `Serialize ImageDeleteResponse`() {
         val event = ImageStorageEvent.Response.Delete(id)
         testSerializeDeserialize(event)
     }
 
     @Test
-    fun `Serialize ImageLoadError`(){
+    fun `Serialize ImageLoadError`() {
         val event = ImageStorageEvent.Response.LoadError(id)
         testSerializeDeserialize(event)
     }
 
-    inline fun <reified T> testSerializeDeserialize(instance: T){
+    inline fun <reified T> testSerializeDeserialize(instance: T) {
         val encoded = klaxon.toJsonString(instance)
         val parsedInstance = klaxon.parse<T>(encoded)
+        println(encoded)
         assertNotNull(parsedInstance)
         assertEquals(instance, parsedInstance)
     }
