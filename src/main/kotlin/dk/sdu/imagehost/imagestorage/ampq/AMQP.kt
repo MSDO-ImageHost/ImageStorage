@@ -8,7 +8,7 @@ import dk.sdu.imagehost.imagestorage.json.UUIDConverter
 import java.io.Closeable
 import java.net.URI
 
-class AMPQ(val uri: URI, val callback: EventCallback) : Closeable {
+class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
 
     val connection: Connection = ConnectionFactory().run {
         setUri(uri)

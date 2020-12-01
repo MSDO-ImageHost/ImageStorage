@@ -1,6 +1,6 @@
 package dk.sdu.imagehost.imagestorage
 
-import dk.sdu.imagehost.imagestorage.ampq.AMPQ
+import dk.sdu.imagehost.imagestorage.ampq.AMQP
 import dk.sdu.imagehost.imagestorage.ampq.EventCallback
 import dk.sdu.imagehost.imagestorage.ampq.ImageStorageEvent
 import dk.sdu.imagehost.imagestorage.db.Parameters
@@ -10,6 +10,7 @@ import java.util.*
 
 fun main() {
     val service = ImageStorageService(Parameters.env(), "img")
+    val uri: String = System.getenv("AMQP_URI") ?: "amqp://guest:guest@localhost:5672"
 
     val callback = object : EventCallback {
         override fun invoke(req: ImageStorageEvent.Request, res: (ImageStorageEvent.Response) -> Unit) {
@@ -36,5 +37,5 @@ fun main() {
             }
         }
     }
-    val ampq = AMPQ(URI(System.getenv("AMPQ_URI")), callback)
+    val ampq = AMQP(URI(uri), callback)
 }
