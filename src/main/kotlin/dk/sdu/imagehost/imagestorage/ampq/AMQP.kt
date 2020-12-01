@@ -5,7 +5,10 @@ import com.rabbitmq.client.*
 import dk.sdu.imagehost.imagestorage.json.Base64Converter
 import dk.sdu.imagehost.imagestorage.json.DateTimeConverter
 import dk.sdu.imagehost.imagestorage.json.UUIDConverter
+import org.slf4j.Logger
+import sun.jvm.hotspot.debugger.win32.coff.DebugVC50X86RegisterEnums.TAG
 import java.io.Closeable
+import java.lang.Exception
 import java.net.URI
 
 class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
@@ -23,36 +26,34 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
     val klaxon = Klaxon().converter(Base64Converter).converter(DateTimeConverter).converter(UUIDConverter)
 
     init {
-        subscribe("ImageCreateRequest", DeliverCallback(::requestCreate))
-        subscribe("ImageLoadRequest", DeliverCallback(::requestLoad))
-        subscribe("ImageDeleteRequest", DeliverCallback(::requestDelete))
-    }
-
-    private fun subscribe(event: String, deliverCallback: DeliverCallback) {
         val listeningChannel = connection.createChannel().apply {
             exchangeDeclare("rapid", "direct")
             queueDeclare("ImageStorage", false, false, false, emptyMap())
         }
-        listeningChannel.queueBind("ImageStorage", "rapid", event)
-        listeningChannel.basicConsume("ImageStorage", true, deliverCallback, CANCEL_NOOP)
+        listeningChannel.queueBind("ImageStorage", "rapid", "ImageCreateRequest")
+        listeningChannel.queueBind("ImageStorage", "rapid", "ImageLoadRequest")
+        listeningChannel.queueBind("ImageStorage", "rapid", "ImageDeleteRequest")
+
+        listeningChannel.basicConsume("ImageStorage", true, DeliverCallback(::receive), CANCEL_NOOP)
     }
 
     override fun close() {
         connection.close()
     }
 
-    fun requestCreate(consumerTag: String, delivery: Delivery) {
-        val event = klaxon.parse<ImageStorageEvent.Request.Create>(String(delivery.body))!!
-        callback(event, ::send)
-    }
-
-    fun requestLoad(consumerTag: String, delivery: Delivery) {
-        val event = klaxon.parse<ImageStorageEvent.Request.Load>(String(delivery.body))!!
-        callback(event, ::send)
-    }
-
-    fun requestDelete(consumerTag: String, delivery: Delivery) {
-        val event = klaxon.parse<ImageStorageEvent.Request.Delete>(String(delivery.body))!!
+    private fun receive(consumerTag: String, delivery: Delivery) {
+        val body = try {
+            String(delivery.body)
+        } catch (e: Exception) {
+            return
+        }
+        println("Received message:\n\t$consumerTag\n\t$body")
+        val event = when (delivery.envelope.routingKey) {
+            "ImageLoadRequest" -> klaxon.parse<ImageStorageEvent.Request.Load>(body)!!
+            "ImageCreateRequest" -> klaxon.parse<ImageStorageEvent.Request.Create>(body)!!
+            "ImageDeleteRequest" -> klaxon.parse<ImageStorageEvent.Request.Delete>(body)!!
+            else -> return
+        }
         callback(event, ::send)
     }
 
