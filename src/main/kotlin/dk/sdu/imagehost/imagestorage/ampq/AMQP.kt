@@ -5,8 +5,6 @@ import com.rabbitmq.client.*
 import dk.sdu.imagehost.imagestorage.json.Base64Converter
 import dk.sdu.imagehost.imagestorage.json.DateTimeConverter
 import dk.sdu.imagehost.imagestorage.json.UUIDConverter
-import org.slf4j.Logger
-import sun.jvm.hotspot.debugger.win32.coff.DebugVC50X86RegisterEnums.TAG
 import java.io.Closeable
 import java.lang.Exception
 import java.net.URI
