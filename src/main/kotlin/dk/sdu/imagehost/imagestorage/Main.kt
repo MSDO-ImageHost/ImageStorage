@@ -12,30 +12,6 @@ fun main() {
     val service = ImageStorageService(Parameters.env(), "img")
     val uri: String = System.getenv("AMQP_URI") ?: "amqp://guest:guest@localhost:5672"
 
-    val callback = object : EventCallback {
-        override fun invoke(req: ImageStorageEvent.Request, res: (ImageStorageEvent.Response) -> Unit) {
-            when (req) {
-                is ImageStorageEvent.Request.Create -> {
-                    val id = UUID.randomUUID()
-                    val image = Image(id, req.owner, LocalDateTime.now(), req.data)
-                    service.storeImage(image)
-                    res(ImageStorageEvent.Response.Create(id))
-                }
-                is ImageStorageEvent.Request.Load -> {
-                    val image = service.requestImage(req.id)
-                    if (image == null) {
-                        res(ImageStorageEvent.Response.LoadError(req.id))
-                    } else {
-                        val (id, owner, createdAt, data) = image
-                        res(ImageStorageEvent.Response.Load(id, owner, data, createdAt))
-                    }
-                }
-                is ImageStorageEvent.Request.Delete -> {
-                    service.deleteImage(req.id)
-                    res(ImageStorageEvent.Response.Delete(req.id))
-                }
-            }
-        }
-    }
+    val callback = EventHandler(service)
     val ampq = AMQP(URI(uri), callback)
 }
