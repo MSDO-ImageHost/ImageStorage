@@ -2,6 +2,7 @@ package dk.sdu.imagehost.imagestorage.ampq
 
 import com.beust.klaxon.Klaxon
 import com.rabbitmq.client.*
+import com.rabbitmq.client.AMQP
 import dk.sdu.imagehost.imagestorage.json.Base64Converter
 import dk.sdu.imagehost.imagestorage.json.DateTimeConverter
 import dk.sdu.imagehost.imagestorage.json.UUIDConverter
@@ -52,13 +53,18 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
             "ImageDeleteRequest" -> klaxon.parse<ImageStorageEvent.Request.Delete>(body)!!
             else -> return
         }
-        callback(event, ::send)
+        val correlation = delivery.properties.correlationId
+        callback(event, send(correlation))
     }
 
-    fun send(response: ImageStorageEvent.Response) {
+    fun send(correlationId: String) = fun (response: ImageStorageEvent.Response) {
         val json: String = klaxon.toJsonString(response)
         println("Sending message:\n\t${response.TAG}\n\t$json")
-        responseChannel.basicPublish("rapid", response.TAG, null, json.toByteArray());
+        val props = AMQP.BasicProperties.Builder().run {
+            this.correlationId(correlationId)
+            build()
+        }
+        responseChannel.basicPublish("rapid", response.TAG, props, json.toByteArray());
     }
 
     companion object {
