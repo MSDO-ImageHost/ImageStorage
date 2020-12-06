@@ -45,7 +45,7 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
         } catch (e: Exception) {
             return
         }
-        println("Received message:\n\t$consumerTag\n\t$body")
+        println("Received message:\n\t${delivery.envelope.routingKey}\n\t$body")
         val event = when (delivery.envelope.routingKey) {
             "ImageLoadRequest" -> klaxon.parse<ImageStorageEvent.Request.Load>(body)!!
             "ImageCreateRequest" -> klaxon.parse<ImageStorageEvent.Request.Create>(body)!!
@@ -55,9 +55,9 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
         callback(event, ::send)
     }
 
-    @Suppress("UNREACHABLE_CODE")
     fun send(response: ImageStorageEvent.Response) {
         val json: String = klaxon.toJsonString(response)
+        println("Sending message:\n\t${response.TAG}\n\t$json")
         responseChannel.basicPublish("rapid", response.TAG, null, json.toByteArray());
     }
 
