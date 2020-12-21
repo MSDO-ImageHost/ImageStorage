@@ -104,8 +104,7 @@ object JSONTest {
 
     @Test
     fun `Image Class`() {
-        val id = UUID.randomUUID()
-        val owner = UUID.randomUUID()
+        val id = UUID.randomUUID().toString()
         testJSON(Image(id, NOW, lighthouseData))
     }
 

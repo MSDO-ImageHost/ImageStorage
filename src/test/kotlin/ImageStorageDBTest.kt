@@ -44,31 +44,31 @@ object ImageStorageDBTest {
 
     @Test
     fun `an image is saved with a set UUID`() = transaction {
-        val idUUID = UUID.randomUUID()
-        val ownerUUID = UUID.randomUUID()
+        val idUUID = UUID.randomUUID().toString()
         val now = LocalDateTime.now()
 
-        val savedObject = ImageRecord.new(idUUID) {
+        val savedObject = ImageRecord.new(UUID.randomUUID()) {
             createdAt = now
+            postId = idUUID
         }
-        assertEquals(idUUID, savedObject.id.value)
+        assertEquals(idUUID, savedObject.postId)
         assertEquals(now, savedObject.createdAt)
     }
 
     @Test
     fun `the correct image is loaded`() = transaction {
-        val idUUID = UUID.randomUUID()
-        val ownerUUID = UUID.randomUUID()
+        val postId = UUID.randomUUID().toString()
         val now = LocalDateTime.now()
 
-        ImageRecord.new(idUUID) {
+        ImageRecord.new(UUID.randomUUID()) {
             createdAt = now
+            this.postId = postId
         }
 
-        val loadedImage = ImageRecord.findById(idUUID)
+        val loadedImage = ImageRecord.findByPostId(postId)
         assertNotNull(loadedImage)
         loadedImage as ImageRecord
-        assertEquals(idUUID, loadedImage.id.value)
+        assertEquals(postId, loadedImage.postId)
         assertEquals(now, loadedImage.createdAt)
     }
 

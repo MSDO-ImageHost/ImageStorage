@@ -23,8 +23,8 @@ object SerializeTest {
         klaxon = Klaxon().converter(Base64Converter).converter(DateTimeConverter).converter(UUIDConverter)
     }
 
-    private val id: UUID = UUID.randomUUID()
-    private val owner: UUID = UUID.randomUUID()
+    private val id = UUID.randomUUID().toString()
+    private val owner = UUID.randomUUID().toString()
 
     @Test
     fun `Serialize Image`() {

@@ -18,14 +18,14 @@ object ImageStorageServiceTest {
     lateinit var pancakesData: ByteArray
     lateinit var rocketData: ByteArray
 
-    val lighthouseID = UUID.randomUUID()
-    val pancakesID = UUID.randomUUID()
-    val rocketID = UUID.randomUUID()
-    val imgID = UUID.randomUUID()
-    val rumplestiltkinID = UUID.randomUUID()
+    val lighthouseID = UUID.randomUUID().toString()
+    val pancakesID = UUID.randomUUID().toString()
+    val rocketID = UUID.randomUUID().toString()
+    val imgID = UUID.randomUUID().toString()
+    val rumplestiltkinID = UUID.randomUUID().toString()
 
-    val userA = UUID.randomUUID()
-    val userB = UUID.randomUUID()
+    val userA = UUID.randomUUID().toString()
+    val userB = UUID.randomUUID().toString()
 
     val NOW = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)
 

@@ -3,7 +3,7 @@ package dk.sdu.imagehost.imagestorage
 import java.time.LocalDateTime
 import java.util.*
 
-data class Image(val post_id: UUID, val created_at: LocalDateTime, val image_data: ByteArray) {
+data class Image(val post_id: String, val created_at: LocalDateTime, val image_data: ByteArray) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

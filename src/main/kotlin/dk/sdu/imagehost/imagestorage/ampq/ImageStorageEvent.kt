@@ -2,14 +2,13 @@ package dk.sdu.imagehost.imagestorage.ampq
 
 import com.beust.klaxon.Json
 import java.time.LocalDateTime
-import java.util.*
 
 sealed class ImageStorageEvent {
 
     abstract val TAG: String
 
     sealed class Request : ImageStorageEvent() {
-        data class Create(val post_id: UUID, val image_data: ByteArray) : Request() {
+        data class Create(val post_id: String, val image_data: ByteArray) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateRequest"
@@ -34,13 +33,13 @@ sealed class ImageStorageEvent {
 
         }
 
-        data class Load(val post_id: UUID) : Request() {
+        data class Load(val post_id: String) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadRequest"
         }
 
-        data class Delete(val post_id: UUID) : Request() {
+        data class Delete(val post_id: String) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteRequest"
@@ -48,13 +47,13 @@ sealed class ImageStorageEvent {
     }
 
     sealed class Response : ImageStorageEvent() {
-        data class Create(val post_id: UUID) : Response() {
+        data class Create(val post_id: String) : Response() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateResponse"
         }
 
-        data class Load(val post_id: UUID, val image_data: ByteArray, val created_at: LocalDateTime) :
+        data class Load(val post_id: String, val image_data: ByteArray, val created_at: LocalDateTime) :
             Response() {
             @Json(ignored = true)
             override val TAG: String
@@ -82,13 +81,13 @@ sealed class ImageStorageEvent {
 
         }
 
-        data class Delete(val post_id: UUID) : Response() {
+        data class Delete(val post_id: String) : Response() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteResponse"
         }
 
-        data class LoadError(val post_id: UUID): Response(){
+        data class LoadError(val post_id: String): Response(){
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadError"

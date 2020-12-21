@@ -16,11 +16,11 @@ object FileSystemImageStoreTest {
     lateinit var pancakes: ByteArray
     lateinit var rocket: ByteArray
 
-    val lighthouseID = UUID.randomUUID()
-    val pancakesID = UUID.randomUUID()
-    val rocketID = UUID.randomUUID()
-    val imgID = UUID.randomUUID()
-    val rumplestiltkinID = UUID.randomUUID()
+    val lighthouseID = UUID.randomUUID().toString()
+    val pancakesID = UUID.randomUUID().toString()
+    val rocketID = UUID.randomUUID().toString()
+    val imgID = UUID.randomUUID().toString()
+    val rumplestiltkinID = UUID.randomUUID().toString()
 
     @BeforeAll
     fun setup(){

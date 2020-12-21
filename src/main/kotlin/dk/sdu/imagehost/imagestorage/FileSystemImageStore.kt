@@ -10,28 +10,28 @@ class FileSystemImageStore(folderName: String) {
     private val extension = "png"
     private val ending = ".$extension"
 
-    fun listFiles(): List<UUID> =
+    fun listFiles(): List<String> =
         folder.listFiles()!!.asSequence().filter {
             it.extension.equals(extension, ignoreCase = true)
-        }.map { UUID.fromString(it.nameWithoutExtension) }.toList()
+        }.map { it.nameWithoutExtension }.toList()
 
-    fun save(data: ByteArray, name: UUID) {
-        val file = File(folder, name.toString() + ending)
+    fun save(data: ByteArray, name: String) {
+        val file = File(folder, name + ending)
         file.writeBytes(data)
     }
 
-    fun delete(name: UUID) {
-        val file = File(folder, name.toString() + ending)
+    fun delete(name: String) {
+        val file = File(folder, name + ending)
         file.delete()
     }
 
-    fun exists(name: UUID): Boolean {
-        val file = File(folder, name.toString() + ending)
+    fun exists(name: String): Boolean {
+        val file = File(folder, name + ending)
         return file.exists()
     }
 
-    fun load(name: UUID): ByteArray {
-        val file = File(folder, name.toString() + ending)
+    fun load(name: String): ByteArray {
+        val file = File(folder, name + ending)
         return file.readBytes()
     }
 }
