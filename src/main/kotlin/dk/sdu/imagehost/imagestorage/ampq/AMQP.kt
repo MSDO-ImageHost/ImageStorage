@@ -8,12 +8,11 @@ import dk.sdu.imagehost.imagestorage.json.DateTimeConverter
 import dk.sdu.imagehost.imagestorage.json.UUIDConverter
 import java.io.Closeable
 import java.lang.Exception
-import java.net.URI
 
-class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
+class AMQP(val params: Parameters, val callback: EventCallback) : Closeable {
 
     val connection: Connection = ConnectionFactory().run {
-        setUri(uri)
+        setUri(params.toString())
         newConnection()
     }
 
@@ -67,6 +66,18 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
             build()
         }
         responseChannel.basicPublish("rapid", response.TAG, props, json.toByteArray());
+    }
+
+    class Parameters(val user: String, val password: String, val host: String, val port: String){
+        override fun toString(): String {
+            return "amqp://$user:$password@$host:$port"
+        }
+        companion object {
+            fun env(): Parameters{
+                fun v(name: String) = System.getenv(name)
+                return Parameters(v("AMQP_USER"), v("AMQP_PASSWORD"), v("AMQP_HOST"), v("AMQP_PORT"))
+            }
+        }
     }
 
     companion object {

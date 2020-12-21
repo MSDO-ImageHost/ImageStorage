@@ -33,5 +33,8 @@ services:
       - DB_PASSWORD=""
       - DB_URI=jdbc:sqlite:test.sqlite
       - DB_DRIVER=org.sqlite.JDBC
-      - AMQP_URI=amqp://guest:guest@rabbitmq:5672
+      - AMQP_USER=guest
+      - AMQP_PASSWORD=guest
+      - AMQP_HOST=rabbitmq
+      - AMQP_PORT=5672
     restart: unless-stopped
