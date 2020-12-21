@@ -31,6 +31,13 @@ object DeserializeTest {
     }
 
     @Test
+    fun `Deserialize ImageCreateRequest with extra ignored fields`(){
+        val json = readJson("ConfirmOnePostCreation")
+        val instance = klaxon.parse<ImageStorageEvent.Request.Create>(json)
+        SerializeTest.testSerializeDeserialize(instance)
+    }
+
+    @Test
     fun `Deserialize ImageLoadRequest`(){
         val json = readJson("ImageLoadRequest")
         testDeserializeSerialize<ImageStorageEvent.Request.Load>(json)

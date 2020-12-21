@@ -29,9 +29,9 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
             exchangeDeclare("rapid", "direct")
             queueDeclare("ImageStorage", false, false, false, emptyMap())
         }
-        listeningChannel.queueBind("ImageStorage", "rapid", "ImageCreateRequest")
+        listeningChannel.queueBind("ImageStorage", "rapid", "ConfirmOnePostCreation")
+        listeningChannel.queueBind("ImageStorage", "rapid", "ConfirmOnePostDeletion")
         listeningChannel.queueBind("ImageStorage", "rapid", "ImageLoadRequest")
-        listeningChannel.queueBind("ImageStorage", "rapid", "ImageDeleteRequest")
 
         listeningChannel.basicConsume("ImageStorage", true, DeliverCallback(::receive), CANCEL_NOOP)
     }
@@ -49,8 +49,9 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
         println("Received message:\n\t${delivery.envelope.routingKey}\n\t$body")
         val event = when (delivery.envelope.routingKey) {
             "ImageLoadRequest" -> klaxon.parse<ImageStorageEvent.Request.Load>(body)!!
-            "ImageCreateRequest" -> klaxon.parse<ImageStorageEvent.Request.Create>(body)!!
-            "ImageDeleteRequest" -> klaxon.parse<ImageStorageEvent.Request.Delete>(body)!!
+            "ConfirmOnePostCreation" -> klaxon.parse<ImageStorageEvent.Request.Create>(body)!!
+            "ConfirmOnePostDeletion" -> klaxon.parse<ImageStorageEvent.Request.Delete>(body)!!
+            "ConfirmOnePostUpdate" -> klaxon.parse<ImageStorageEvent.Request.Create>(body)!! //TODO
             else -> return
         }
         val correlation = delivery.properties.correlationId
