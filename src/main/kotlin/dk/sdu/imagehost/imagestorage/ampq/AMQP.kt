@@ -12,7 +12,9 @@ import java.lang.Exception
 class AMQP(val params: Parameters, val callback: EventCallback) : Closeable {
 
     val connection: Connection = ConnectionFactory().run {
-        setUri(params.toString())
+        val uri = params.toString()
+        println(uri)
+        setUri(uri)
         newConnection()
     }
 
