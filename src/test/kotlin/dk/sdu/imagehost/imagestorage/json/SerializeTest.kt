@@ -28,12 +28,12 @@ object SerializeTest {
 
     @Test
     fun `Serialize Image`() {
-        testSerializeDeserialize(Image(id, owner, NOW, DATA))
+        testSerializeDeserialize(Image(id, NOW, DATA))
     }
 
     @Test
     fun `Serialize ImageCreateRequest`() {
-        val event = ImageStorageEvent.Request.Create(id, owner, DATA)
+        val event = ImageStorageEvent.Request.Create(id, DATA)
         testSerializeDeserialize(event)
     }
 
@@ -57,7 +57,7 @@ object SerializeTest {
 
     @Test
     fun `Serialize ImageLoadResponse`() {
-        val event = ImageStorageEvent.Response.Load(id, owner, DATA, NOW)
+        val event = ImageStorageEvent.Response.Load(id, DATA, NOW)
         testSerializeDeserialize(event)
     }
 

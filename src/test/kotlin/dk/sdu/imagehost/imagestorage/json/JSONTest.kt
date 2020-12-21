@@ -106,7 +106,7 @@ object JSONTest {
     fun `Image Class`() {
         val id = UUID.randomUUID()
         val owner = UUID.randomUUID()
-        testJSON(Image(id, owner, NOW, lighthouseData))
+        testJSON(Image(id, NOW, lighthouseData))
     }
 
     inline fun <reified T> testJSON(instance: T){

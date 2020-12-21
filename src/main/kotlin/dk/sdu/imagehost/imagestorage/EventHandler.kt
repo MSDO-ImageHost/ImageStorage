@@ -8,22 +8,22 @@ class EventHandler(val service: ImageStorageService) : EventCallback {
     override fun invoke(req: ImageStorageEvent.Request, res: (ImageStorageEvent.Response) -> Unit) {
         when (req) {
             is ImageStorageEvent.Request.Create -> {
-                val image = Image(req.id, req.owner, LocalDateTime.now(), req.data)
+                val image = Image(req.post_id, LocalDateTime.now(), req.image_data)
                 service.storeImage(image)
-                res(ImageStorageEvent.Response.Create(req.id))
+                res(ImageStorageEvent.Response.Create(req.post_id))
             }
             is ImageStorageEvent.Request.Load -> {
-                val image = service.requestImage(req.id)
+                val image = service.requestImage(req.post_id)
                 if (image == null) {
-                    res(ImageStorageEvent.Response.LoadError(req.id))
+                    res(ImageStorageEvent.Response.LoadError(req.post_id))
                 } else {
-                    val (id, owner, createdAt, data) = image
-                    res(ImageStorageEvent.Response.Load(id, owner, data, createdAt))
+                    val (id, createdAt, data) = image
+                    res(ImageStorageEvent.Response.Load(id, data, createdAt))
                 }
             }
             is ImageStorageEvent.Request.Delete -> {
-                service.deleteImage(req.id)
-                res(ImageStorageEvent.Response.Delete(req.id))
+                service.deleteImage(req.post_id)
+                res(ImageStorageEvent.Response.Delete(req.post_id))
             }
         }
     }

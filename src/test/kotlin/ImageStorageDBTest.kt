@@ -50,10 +50,8 @@ object ImageStorageDBTest {
 
         val savedObject = ImageRecord.new(idUUID) {
             createdAt = now
-            owner = ownerUUID
         }
         assertEquals(idUUID, savedObject.id.value)
-        assertEquals(ownerUUID, savedObject.owner)
         assertEquals(now, savedObject.createdAt)
     }
 
@@ -65,14 +63,12 @@ object ImageStorageDBTest {
 
         ImageRecord.new(idUUID) {
             createdAt = now
-            owner = ownerUUID
         }
 
         val loadedImage = ImageRecord.findById(idUUID)
         assertNotNull(loadedImage)
         loadedImage as ImageRecord
         assertEquals(idUUID, loadedImage.id.value)
-        assertEquals(ownerUUID, loadedImage.owner)
         assertEquals(now, loadedImage.createdAt)
     }
 

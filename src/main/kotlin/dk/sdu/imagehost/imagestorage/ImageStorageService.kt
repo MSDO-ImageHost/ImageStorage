@@ -28,23 +28,20 @@ class ImageStorageService(dbParameters: Parameters, folderName: String) {
     }.map {
         val id = it.id.value
         val data = file.load(id)
-        val owner = it.owner
         val createdAt = it.createdAt
-        Image(id, owner, createdAt, data)
+        Image(id, createdAt, data)
     }
 
     fun storeImage(image: Image) {
-        file.save(image.data, image.id)
+        file.save(image.image_data, image.post_id)
         db {
-            val existing = ImageRecord.findById(image.id)
+            val existing = ImageRecord.findById(image.post_id)
             if (existing == null) {
-                ImageRecord.new(image.id) {
-                    owner = image.owner
-                    createdAt = image.createdAt
+                ImageRecord.new(image.post_id) {
+                    createdAt = image.created_at
                 }
             } else {
-                existing.owner = image.owner
-                existing.createdAt = image.createdAt
+                existing.createdAt = image.created_at
             }
         }
     }
@@ -66,9 +63,8 @@ class ImageStorageService(dbParameters: Parameters, folderName: String) {
         } ?: return null
         val id = record.id.value
         val data = file.load(id)
-        val owner = record.owner
         val createdAt = record.createdAt
-        return Image(id, owner, createdAt, data)
+        return Image(id, createdAt, data)
     }
 
 }

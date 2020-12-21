@@ -9,7 +9,7 @@ sealed class ImageStorageEvent {
     abstract val TAG: String
 
     sealed class Request : ImageStorageEvent() {
-        data class Create(val id: UUID, val owner: UUID, val data: ByteArray) : Request() {
+        data class Create(val post_id: UUID, val image_data: ByteArray) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateRequest"
@@ -20,28 +20,27 @@ sealed class ImageStorageEvent {
 
                 other as Create
 
-                if (id != other.id) return false
-                if (owner != other.owner) return false
-                if (!data.contentEquals(other.data)) return false
+                if (post_id != other.post_id) return false
+                if (!image_data.contentEquals(other.image_data)) return false
 
                 return true
             }
 
             override fun hashCode(): Int {
-                var result = owner.hashCode()
-                result = 31 * result + data.contentHashCode()
+                var result = post_id.hashCode()
+                result = 31 * result + image_data.contentHashCode()
                 return result
             }
 
         }
 
-        data class Load(val id: UUID) : Request() {
+        data class Load(val post_id: UUID) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadRequest"
         }
 
-        data class Delete(val id: UUID) : Request() {
+        data class Delete(val post_id: UUID) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteRequest"
@@ -49,13 +48,13 @@ sealed class ImageStorageEvent {
     }
 
     sealed class Response : ImageStorageEvent() {
-        data class Create(val id: UUID) : Response() {
+        data class Create(val post_id: UUID) : Response() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateResponse"
         }
 
-        data class Load(val id: UUID, val owner: UUID, val data: ByteArray, val createdAt: LocalDateTime) :
+        data class Load(val post_id: UUID, val image_data: ByteArray, val created_at: LocalDateTime) :
             Response() {
             @Json(ignored = true)
             override val TAG: String
@@ -67,30 +66,29 @@ sealed class ImageStorageEvent {
 
                 other as Load
 
-                if (id != other.id) return false
-                if (owner != other.owner) return false
-                if (!data.contentEquals(other.data)) return false
-                if (createdAt != other.createdAt) return false
+                if (post_id != other.post_id) return false
+                if (!image_data.contentEquals(other.image_data)) return false
+                if (created_at != other.created_at) return false
 
                 return true
             }
 
             override fun hashCode(): Int {
-                var result = id.hashCode()
-                result = 31 * result + owner.hashCode()
-                result = 31 * result + data.contentHashCode()
-                result = 31 * result + createdAt.hashCode()
+                var result = post_id.hashCode()
+                result = 31 * result + image_data.contentHashCode()
+                result = 31 * result + created_at.hashCode()
                 return result
             }
+
         }
 
-        data class Delete(val id: UUID) : Response() {
+        data class Delete(val post_id: UUID) : Response() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteResponse"
         }
 
-        data class LoadError(val id: UUID): Response(){
+        data class LoadError(val post_id: UUID): Response(){
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadError"

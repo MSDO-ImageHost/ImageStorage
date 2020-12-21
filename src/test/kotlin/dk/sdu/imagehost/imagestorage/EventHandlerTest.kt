@@ -72,7 +72,7 @@ object EventHandlerTest {
     fun `ImageCreateRequest reply with ImageCreateResponse`(){
         val owner = UUID.randomUUID()
         val id = UUID.randomUUID()
-        val request = ImageStorageEvent.Request.Create(id, owner, lighthouseData)
+        val request = ImageStorageEvent.Request.Create(id, lighthouseData)
         val holder = EventHolder()
         handler(request, holder)
         val response = holder.lastEvent
@@ -92,22 +92,21 @@ object EventHandlerTest {
     @Test
     fun `ImageLoadRequest for existing image reply with ImageLoadResponse`(){
         val owner = UUID.randomUUID()
-        val create = ImageStorageEvent.Request.Create(UUID.randomUUID(), owner, lighthouseData)
+        val create = ImageStorageEvent.Request.Create(UUID.randomUUID(), lighthouseData)
         val holder = EventHolder()
         handler(create, holder)
         val createResponse = holder.lastEvent
         assert(createResponse is ImageStorageEvent.Response.Create)
         createResponse as ImageStorageEvent.Response.Create
-        val id = createResponse.id
+        val id = createResponse.post_id
 
         val load = ImageStorageEvent.Request.Load(id)
         handler(load, holder)
         val loadResponse = holder.lastEvent
         assert(loadResponse is ImageStorageEvent.Response.Load)
         loadResponse as ImageStorageEvent.Response.Load
-        assertArrayEquals(lighthouseData, loadResponse.data)
-        assertEquals(owner, loadResponse.owner)
-        assertEquals(id, loadResponse.id)
+        assertArrayEquals(lighthouseData, loadResponse.image_data)
+        assertEquals(id, loadResponse.post_id)
     }
 
     @Test
@@ -119,7 +118,7 @@ object EventHandlerTest {
         val loadResponse = holder.lastEvent
         assert(loadResponse is ImageStorageEvent.Response.LoadError)
         loadResponse as ImageStorageEvent.Response.LoadError
-        assertEquals(id, loadResponse.id)
+        assertEquals(id, loadResponse.post_id)
     }
 
 }

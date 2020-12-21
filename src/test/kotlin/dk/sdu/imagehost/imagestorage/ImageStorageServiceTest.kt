@@ -68,14 +68,14 @@ object ImageStorageServiceTest {
 
     @Test
     fun `an image is saved`() {
-        val lighthouse = Image(lighthouseID, userA, NOW, lighthouseData)
+        val lighthouse = Image(lighthouseID, NOW, lighthouseData)
         imageStorage.storeImage(lighthouse)
         Assertions.assertTrue(imageStorage.exists(lighthouseID))
     }
 
     @Test
     fun `an image is loaded`() {
-        val pancakes = Image(pancakesID, userA, NOW, pancakesData)
+        val pancakes = Image(pancakesID, NOW, pancakesData)
         imageStorage.storeImage(pancakes)
         Assertions.assertTrue(imageStorage.exists(pancakesID))
         val pancakesLoaded = imageStorage.requestImage(pancakesID)
@@ -84,8 +84,8 @@ object ImageStorageServiceTest {
 
     @Test
     fun `an image is overwritten`() {
-        val lighthouse = Image(imgID, userA, NOW.truncatedTo(ChronoUnit.MILLIS), lighthouseData)
-        val pancakes = Image(imgID, userA, NOW, pancakesData)
+        val lighthouse = Image(imgID, NOW.truncatedTo(ChronoUnit.MILLIS), lighthouseData)
+        val pancakes = Image(imgID, NOW, pancakesData)
         imageStorage.storeImage(pancakes)
         Assertions.assertTrue(imageStorage.exists(imgID))
         imageStorage.storeImage(lighthouse)
@@ -102,7 +102,7 @@ object ImageStorageServiceTest {
 
     @Test
     fun `an image is deleted`() {
-        val lighthouse = Image(lighthouseID, userA, NOW, lighthouseData)
+        val lighthouse = Image(lighthouseID, NOW, lighthouseData)
         imageStorage.storeImage(lighthouse)
         Assertions.assertTrue(imageStorage.exists(lighthouseID))
         imageStorage.deleteImage(lighthouseID)
@@ -111,9 +111,9 @@ object ImageStorageServiceTest {
 
     @Test
     fun `there are three images saved`() {
-        val lighthouse = Image(lighthouseID, userA, NOW, lighthouseData)
-        val pancakes = Image(pancakesID, userB, NOW, pancakesData)
-        val rocket = Image(rocketID, userB, NOW, rocketData)
+        val lighthouse = Image(lighthouseID, NOW, lighthouseData)
+        val pancakes = Image(pancakesID, NOW, pancakesData)
+        val rocket = Image(rocketID, NOW, rocketData)
         imageStorage.storeImage(lighthouse)
         imageStorage.storeImage(pancakes)
         imageStorage.storeImage(rocket)
