@@ -1,63 +1,73 @@
 # API Specification
 
-#### Access control
-Any request must contain a valid session token
-```json
-{
-    "session_token": "<SessionTokenID: valid and active JWT>"
-}
-```
-
 ## Create Image
 
 Request
+
 ```json
 {
-    "creator": "<JWT>",
-    "image_data": "<ByteArray>",
-    "image_id": "<String?: Optional ID of image to replace>"
+  "image_data": "<Base64 ByteArray>",
+  "post_id": "<String>"
 }
 ```
 
 Response
+
+Header ``status_code: 204``
+
 ```json
 {
-    "status_code": "<Int: HTTP code>",
-    "created_by": "<String?: user ID>",
-    "image_id": "<String?: image ID>"
+  "post_id": "<String?: image ID>"
 }
 ```
 
 ## Request Image
 
 Request
+
 ```json
 {
-    "image_id": "<String: image ID>"
+  "post_id": "<String: image ID>"
 }
 ```
 
 Response
+
+Header ``status_code: 200``
+
 ```json
 {
-    "status_code": "<Int: HTTP code>",
-    "image_data": "<Image?: data of image>"
+  "post_id": "<String>",
+  "image_data": "<Image?: data of image>"
+}
+```
+
+Error
+
+Header ``status_code: 400``
+
+```json
+{
+  "post_id": "<String>"
 }
 ```
 
 ## Delete Image
 
 Request
+
 ```json
 {
-    "image_id": "<String: image ID>",
-    "deletor": "<JWT>"
+  "post_id": "<String: image ID>"
 }
 ```
 
 Response
+
+Header ``status_code: 204``
+
 ```json
 {
-    "status_code": "<Int: HTTP code>"
+  "post_id": "<String: image ID>"
 }
 ```
