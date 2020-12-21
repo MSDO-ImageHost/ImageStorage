@@ -33,7 +33,7 @@ object SerializeTest {
 
     @Test
     fun `Serialize ImageCreateRequest`() {
-        val event = ImageStorageEvent.Request.Create(owner, DATA)
+        val event = ImageStorageEvent.Request.Create(id, owner, DATA)
         testSerializeDeserialize(event)
     }
 

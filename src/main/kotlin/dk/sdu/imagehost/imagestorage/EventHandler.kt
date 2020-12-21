@@ -3,16 +3,14 @@ package dk.sdu.imagehost.imagestorage
 import dk.sdu.imagehost.imagestorage.ampq.EventCallback
 import dk.sdu.imagehost.imagestorage.ampq.ImageStorageEvent
 import java.time.LocalDateTime
-import java.util.*
 
 class EventHandler(val service: ImageStorageService) : EventCallback {
     override fun invoke(req: ImageStorageEvent.Request, res: (ImageStorageEvent.Response) -> Unit) {
         when (req) {
             is ImageStorageEvent.Request.Create -> {
-                val id = UUID.randomUUID()
-                val image = Image(id, req.owner, LocalDateTime.now(), req.data)
+                val image = Image(req.id, req.owner, LocalDateTime.now(), req.data)
                 service.storeImage(image)
-                res(ImageStorageEvent.Response.Create(id))
+                res(ImageStorageEvent.Response.Create(req.id))
             }
             is ImageStorageEvent.Request.Load -> {
                 val image = service.requestImage(req.id)

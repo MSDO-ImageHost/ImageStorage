@@ -9,7 +9,7 @@ sealed class ImageStorageEvent {
     abstract val TAG: String
 
     sealed class Request : ImageStorageEvent() {
-        data class Create(val owner: UUID, val data: ByteArray) : Request() {
+        data class Create(val id: UUID, val owner: UUID, val data: ByteArray) : Request() {
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateRequest"
@@ -20,6 +20,7 @@ sealed class ImageStorageEvent {
 
                 other as Create
 
+                if (id != other.id) return false
                 if (owner != other.owner) return false
                 if (!data.contentEquals(other.data)) return false
 

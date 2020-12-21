@@ -71,7 +71,8 @@ object EventHandlerTest {
     @Test
     fun `ImageCreateRequest reply with ImageCreateResponse`(){
         val owner = UUID.randomUUID()
-        val request = ImageStorageEvent.Request.Create(owner, lighthouseData)
+        val id = UUID.randomUUID()
+        val request = ImageStorageEvent.Request.Create(id, owner, lighthouseData)
         val holder = EventHolder()
         handler(request, holder)
         val response = holder.lastEvent
@@ -91,7 +92,7 @@ object EventHandlerTest {
     @Test
     fun `ImageLoadRequest for existing image reply with ImageLoadResponse`(){
         val owner = UUID.randomUUID()
-        val create = ImageStorageEvent.Request.Create(owner, lighthouseData)
+        val create = ImageStorageEvent.Request.Create(UUID.randomUUID(), owner, lighthouseData)
         val holder = EventHolder()
         handler(create, holder)
         val createResponse = holder.lastEvent
