@@ -47,7 +47,14 @@ sealed class ImageStorageEvent {
     }
 
     sealed class Response : ImageStorageEvent() {
+
+        abstract val status_code: Int
+
         data class Create(val post_id: String) : Response() {
+            @Json(ignored = true)
+            override val status_code: Int
+                get() = 201
+
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageCreateResponse"
@@ -55,6 +62,10 @@ sealed class ImageStorageEvent {
 
         data class Load(val post_id: String, val image_data: ByteArray, val created_at: LocalDateTime) :
             Response() {
+            @Json(ignored = true)
+            override val status_code: Int
+                get() = 200
+
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadResponse"
@@ -83,11 +94,19 @@ sealed class ImageStorageEvent {
 
         data class Delete(val post_id: String) : Response() {
             @Json(ignored = true)
+            override val status_code: Int
+                get() = 204
+
+            @Json(ignored = true)
             override val TAG: String
                 get() = "ImageDeleteResponse"
         }
 
         data class LoadError(val post_id: String): Response(){
+            @Json(ignored = true)
+            override val status_code: Int
+                get() = 400
+
             @Json(ignored = true)
             override val TAG: String
                 get() = "ImageLoadError"

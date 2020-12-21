@@ -63,6 +63,7 @@ class AMQP(val uri: URI, val callback: EventCallback) : Closeable {
         println("Sending message:\n\t${response.TAG}\n\t$json")
         val props = AMQP.BasicProperties.Builder().run {
             this.correlationId(correlationId)
+            this.headers(mapOf("status_code" to response.status_code.toString()))
             build()
         }
         responseChannel.basicPublish("rapid", response.TAG, props, json.toByteArray());
