@@ -3,6 +3,7 @@ package dk.sdu.imagehost.imagestorage.json
 import com.beust.klaxon.Klaxon
 import dk.sdu.imagehost.imagestorage.Image
 import dk.sdu.imagehost.imagestorage.ampq.ImageStorageEvent
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -34,7 +35,7 @@ object DeserializeTest {
     fun `Deserialize ImageCreateRequest with extra ignored fields`(){
         val json = readJson("ConfirmOnePostCreation")
         val instance = klaxon.parse<ImageStorageEvent.Request.Create>(json)
-        SerializeTest.testSerializeDeserialize(instance)
+        testSerializeDeserialize(instance)
     }
 
     @Test
@@ -79,6 +80,14 @@ object DeserializeTest {
         val instance = klaxon.parse<T>(json)
         val encoded = klaxon.toJsonString(instance)
         assertEquals(json, encoded)
+    }
+
+    inline fun <reified T> testSerializeDeserialize(instance: T) {
+        val encoded = SerializeTest.klaxon.toJsonString(instance)
+        val parsedInstance = SerializeTest.klaxon.parse<T>(encoded)
+        println(encoded)
+        Assertions.assertNotNull(parsedInstance)
+        assertEquals(instance, parsedInstance)
     }
 
 }
