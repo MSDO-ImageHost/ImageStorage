@@ -16,6 +16,9 @@ object FileSystemImageStoreTest {
     lateinit var pancakes: ByteArray
     lateinit var rocket: ByteArray
 
+    lateinit var bmp: ByteArray
+    lateinit var jpg: ByteArray
+
     val lighthouseID = UUID.randomUUID()
     val pancakesID = UUID.randomUUID()
     val rocketID = UUID.randomUUID()
@@ -31,6 +34,9 @@ object FileSystemImageStoreTest {
         lighthouse = loadResource("lighthouse.png")
         pancakes = loadResource("pancakes.png")
         rocket = loadResource("rocket.png")
+
+        bmp = loadResource("lighthouse.bmp")
+        jpg = loadResource("lighthouse.jpg")
 
         imageStore = FileSystemImageStore(folderName)
     }
@@ -95,12 +101,19 @@ object FileSystemImageStoreTest {
         assertEquals(setOf(pancakesID, lighthouseID, rocketID), images)
     }
 
-    @AfterEach
+    @Test
+    fun `a jpg saved is converted to a PNG file`(){
+        imageStore.save(jpg, lighthouseID)
+        val image = imageStore.load(lighthouseID)
+        assertEquals(image.slice(1..3).toByteArray(), "PNG".toByteArray())
+    }
+
+    @BeforeEach
     fun cleanupFiles(){
         File(".", folderName).listFiles()?.forEach { it.delete() }
     }
 
-    @AfterAll
+    @BeforeAll
     fun cleanupFolder(){
         File(".", folderName).deleteRecursively()
     }
