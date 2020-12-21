@@ -83,8 +83,8 @@ object DeserializeTest {
     }
 
     inline fun <reified T> testSerializeDeserialize(instance: T) {
-        val encoded = SerializeTest.klaxon.toJsonString(instance)
-        val parsedInstance = SerializeTest.klaxon.parse<T>(encoded)
+        val encoded = klaxon.toJsonString(instance)
+        val parsedInstance = klaxon.parse<T>(encoded)
         println(encoded)
         Assertions.assertNotNull(parsedInstance)
         assertEquals(instance, parsedInstance)
