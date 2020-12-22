@@ -64,6 +64,7 @@ class AMQP(val params: Parameters, val callback: EventCallback) : Closeable {
         println("Sending message:\n\t${response.TAG}\n\t$json")
         val props = AMQP.BasicProperties.Builder().run {
             this.correlationId(correlationId)
+            this.deliveryMode(2 /*Persistent*/)
             this.headers(mapOf("status_code" to response.status_code.toString()))
             build()
         }
