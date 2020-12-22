@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "dk.sdu.imagehost"
-version = "0.0.1"
+version = "0.9.4"
 
 repositories {
     mavenCentral()
